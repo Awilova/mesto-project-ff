@@ -1,30 +1,44 @@
 const popUps = document.querySelectorAll(".popup");
+const closePopups = document.querySelectorAll(".popup__close");
 
-function openModal(e, PopUpIndex) {
-  if (
-    !(
-      (e.type === "click" &&
-        e.target.classList.contains("card__like-button")) ||
-      e.target.classList.contains("card__delete-button")
-    )
-  ) {
-    const popup = popUps[PopUpIndex];
-    popup.classList.toggle("popup_is-opened");
+// Открытие модального окна
+function openModal(popup) {
+  popup.classList.toggle("popup_is-opened");
+  document.addEventListener("keydown", closeModalByEsc);
+}
+
+// Закрытие модального окна
+
+function closeModal(popup) {
+  popup.classList.remove("popup_is-opened");
+  document.removeEventListener("keydown", closeModalByEsc);
+}
+
+// Закрытие модального окна по кнопке
+
+closePopups.forEach((button) => {
+  const popup = button.closest(".popup");
+  button.addEventListener("click", () => closeModal(popup));
+});
+
+// Закрытие модального окна по overlay
+
+function closeModalByOverlay(evt) {
+  if (evt.target.classList.contains("popup_is-opened")) {
+    closeModal(evt.target);
   }
 }
 
-function closeModal(e, index) {
-  if (
-    (e.type === "keydown" && e.key === "Escape") ||
-    (e.type === "click" && e.target.classList.contains("popup"))
-  ) {
-    popUps.forEach((popup) => popup.classList.remove("popup_is-opened"));
-  } else if (
-    (e.type === "click" && e.target.classList.contains("popup__close")) ||
-    e.target.classList.contains("popup__button")
-  ) {
-    const popup = popUps[index];
-    popup.classList.remove("popup_is-opened");
+popUps.forEach((popUp) =>
+  popUp.addEventListener("mousedown", closeModalByOverlay)
+);
+
+// Закрытие модального окна по Escape
+
+function closeModalByEsc(evt) {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector(".popup_is-opened");
+    closeModal(openedPopup);
   }
 }
 
