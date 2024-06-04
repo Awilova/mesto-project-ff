@@ -1,7 +1,7 @@
 .profile__edit-button {
   width: 24px;
   height: 24px;
-  background: transparent url('../../../images/edit-icon.svg') center no-repeat;
+  background: transparent url("../../../images/edit-icon.svg") center no-repeat;
   background-size: 10px 10px;
   border: 1px solid #fff;
   grid-area: button;
@@ -26,4 +26,22 @@
     height: 18px;
     background-size: 8px 8px;
   }
+}
+
+.profile__picture_change_button {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: transparent url("../../../images/changeAvatarIcon.svg") center
+    no-repeat;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0;
+}
+
+.profile__picture_change_button:hover {
+  opacity: 1;
+  z-index: 2;
 }
