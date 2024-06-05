@@ -1,6 +1,3 @@
-const popUps = document.querySelectorAll(".popup");
-const closePopups = document.querySelectorAll(".popup__close");
-
 // Открытие модального окна
 function openModal(popup) {
   popup.classList.toggle("popup_is-opened");
@@ -14,13 +11,6 @@ function closeModal(popup) {
   document.removeEventListener("keydown", closeModalByEsc);
 }
 
-// Закрытие модального окна по кнопке
-
-closePopups.forEach((button) => {
-  const popup = button.closest(".popup");
-  button.addEventListener("click", () => closeModal(popup));
-});
-
 // Закрытие модального окна по overlay
 
 function closeModalByOverlay(evt) {
@@ -28,10 +18,6 @@ function closeModalByOverlay(evt) {
     closeModal(evt.target);
   }
 }
-
-popUps.forEach((popUp) =>
-  popUp.addEventListener("mousedown", closeModalByOverlay)
-);
 
 // Закрытие модального окна по Escape
 
@@ -42,4 +28,4 @@ function closeModalByEsc(evt) {
   }
 }
 
-export { openModal, closeModal };
+export { openModal, closeModal, closeModalByOverlay };

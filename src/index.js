@@ -1,6 +1,10 @@
 import {} from "./pages/index.css";
 import { createCard, deleteCard, likeCard } from "./components/card.js";
-import { openModal, closeModal } from "./components/modal.js";
+import {
+  openModal,
+  closeModal,
+  closeModalByOverlay,
+} from "./components/modal.js";
 import {
   validationStructure,
   enableValidation,
@@ -13,6 +17,7 @@ import {
   addCard,
   changeAvatar,
 } from "./components/api.js";
+import { loadingButton } from "./components/utils.js";
 
 // Переменные - создание и редактирование карточки
 
@@ -23,6 +28,8 @@ const profilePopup = document.querySelector(".popup_type_edit");
 const cardPopup = document.querySelector(".popup_type_new-card");
 const imagePopup = document.querySelector(".popup_type_image");
 const avatarPopup = document.querySelector(".popup_type_change_avatar");
+const buttonsClosePopup = document.querySelectorAll(".popup__close");
+const popUps = document.querySelectorAll(".popup");
 
 const cardPopupCaption = imagePopup.querySelector(".popup__caption");
 const cardPopupImage = imagePopup.querySelector(".popup__image");
@@ -62,6 +69,7 @@ function handleClickModalEdit() {
 }
 
 function handleClickOpenAddCard() {
+  formCard.reset();
   clearValidation(profilePopup, validationStructure);
   openModal(cardPopup);
 }
@@ -75,17 +83,28 @@ profileEditButton.addEventListener("click", handleClickModalEdit);
 profileAddButton.addEventListener("click", handleClickOpenAddCard);
 avatarEditButton.addEventListener("click", handleClickOpenAvatar);
 
+// Закрытие модального окна по кнопке
+
+buttonsClosePopup.forEach((button) => {
+  const popup = button.closest(".popup");
+  button.addEventListener("click", () => closeModal(popup));
+});
+
+// Закрытие модального окна по overlay
+
+popUps.forEach((popUp) =>
+  popUp.addEventListener("mousedown", closeModalByOverlay)
+);
+
 // Редактирование профиля
 function handleFormProfileSubmit(e) {
   e.preventDefault();
   loadingButton(true, profilePopup);
-  nameContent.textContent = nameInput.value;
-  jobContent.textContent = jobInput.value;
 
-  editProfile(nameContent.textContent, jobContent.textContent)
+  editProfile(nameInput.value, jobInput.value)
     .then((user) => {
-      nameContent.textContent = user.name;
       jobContent.textContent = user.about;
+      nameContent.textContent = user.name;
       closeModal(profilePopup);
     })
     .catch((err) => {
@@ -114,9 +133,6 @@ function handleClickAddCard(e) {
         card.owner._id
       );
       listElement.prepend(newCard);
-
-      inputNameOfCard.value = "";
-      inputLinkOfCard.value = "";
 
       closeModal(cardPopup);
     })
@@ -180,13 +196,3 @@ Promise.all([getUserProfile(), getCards()])
   .catch((err) => {
     console.log(err);
   });
-
-// Улучшенный UX всех форм
-function loadingButton(loading, popupName) {
-  const popupButtonLoading = popupName.querySelector(".popup__button");
-  if (loading) {
-    popupButtonLoading.textContent = "Сохранение...";
-  } else {
-    popupButtonLoading.textContent = "Сохранить";
-  }
-}
