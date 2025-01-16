@@ -18,11 +18,11 @@
 git clone git@github.com:Awilova/mesto-project-ff.git
 cd mesto-project-ff
 ```
-Установите зависимости
+Установите зависимости:
 ```
 npm ci
 ```
-Соберите проект
+Соберите проект:
 ```
 npm run build
 ```
