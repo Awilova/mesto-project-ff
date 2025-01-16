@@ -15,7 +15,7 @@
 ### Установка и запуск
 Клонируйте репозиторий и перейдите в его директорию:
 ```
-git clone
+git clone git@github.com:Awilova/mesto-project-ff.git
 cd mesto-project-ff
 ```
 Установите зависимости
